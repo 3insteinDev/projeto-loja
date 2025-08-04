@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import Footer from './components/Footer'
 import Banner from './components/Banner'
+import Footer from './components/Footer'
 import Produtos from './pages/Produtos'
 import Carrinho from './pages/Carrinho'
 import './styles.css'
@@ -11,7 +11,6 @@ function App() {
   const [produtos, setProdutos] = useState([])
   const [carrinho, setCarrinho] = useState([])
 
-  // Simula um "fetch"
   useEffect(() => {
     setProdutos([
       { id: 1, nome: 'Camiseta', preco: 50 },
@@ -24,10 +23,13 @@ function App() {
     setCarrinho((prev) => [...prev, produto])
   }
 
+  const removerDoCarrinho = (indexParaRemover) => {
+    setCarrinho((prev) => prev.filter((_, index) => index !== indexParaRemover))
+  }
 
- return (
+  return (
     <Router>
-      <Navbar />
+      <Navbar carrinho={carrinho} />
       <Banner />
       <Routes>
         <Route
@@ -41,7 +43,12 @@ function App() {
         />
         <Route
           path="/carrinho"
-          element={<Carrinho carrinho={carrinho} />}
+          element={
+            <Carrinho
+              carrinho={carrinho}
+              removerDoCarrinho={removerDoCarrinho}
+            />
+          }
         />
       </Routes>
       <Footer />
@@ -50,4 +57,3 @@ function App() {
 }
 
 export default App
-
